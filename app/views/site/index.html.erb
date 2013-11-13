@@ -1,0 +1,23 @@
+<section id="output"></section>
+
+<script>
+  $(function() {
+    $.ajax({
+      url: '/api/articles',
+      type: 'GET', // getting info GET, making new POST, update put/patch, deleting Delete
+      data: 'json',
+      success: function (data) {
+        console.log(data)
+        $.each(data, function(index, article) {
+          
+          $('#output').append( $('<p></p>').text(article.title) )
+        })
+        
+      }
+    });
+
+
+  });
+
+
+</script>
