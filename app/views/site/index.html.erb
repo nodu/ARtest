@@ -1,23 +1,75 @@
+<script id="articles-template" type="text/x-handlebars-template">
+  <ul class="article-links">
+    {{#each this}}
+      <li data-id="{{id}}">{{title}}</li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="article-template" type="text/x-handlebars-template">
+  <article>
+    <header>
+      <h1>{{title}}</h1>
+    </header>
+    <p>{{body}}</p>
+    <footer>
+      <p>{{niceDate created_at}}</p>
+      <p class="articles-path">All articles</p>
+    </footer>
+  </article>
+</script>
+
 <section id="output"></section>
 
 <script>
-  $(function() {
-    $.ajax({
-      url: '/api/articles',
-      type: 'GET', // getting info GET, making new POST, update put/patch, deleting Delete
-      data: 'json',
-      success: function (data) {
-        console.log(data)
-        $.each(data, function(index, article) {
-          
-          $('#output').append( $('<p></p>').text(article.title) )
-        })
-        
-      }
+  $(function(){
+    
+    Handlebars.registerHelper('niceDate', function(d,fmt) {
+      return moment(d).calendar();
     });
-
-
+    
+    var showArticles = function() {
+      $.ajax({
+        url: '/api/articles',
+        type: 'GET',
+        data: 'json',
+        success: function(data) {
+          var source = $("#articles-template").html();
+          var template = Handlebars.compile(source);
+        
+          $('#output').html(template(data));
+        },
+        error: function(x,y,z) {
+          console.log(x,y,z);
+        }
+      });
+    };
+    
+    var showArticle = function(id) {
+      $.ajax({
+        url: '/api/articles/' + id,
+        type: 'GET',
+        data: 'json',
+        success: function(data) {
+          var source = $("#article-template").html();
+          var template = Handlebars.compile(source);
+        
+          $('#output').html(template(data));
+        },
+        error: function(x,y,z) {
+          console.log(x,y,z);
+        }
+      });
+    };
+    
+    $('#output').on('click', 'ul.article-links li', function(e) {
+      showArticle( $(this).data('id') );
+    });
+    
+    $('#output').on('click', 'p.articles-path', function(e) {
+      showArticles();
+    });
+    
+    showArticles();
   });
-
-
 </script>

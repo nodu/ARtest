@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
   before_action :get_article, except: [:index, :create]
 
   def index
-    articles = Article.includes(:comments).all  #don't need Articles.entries.all
+    articles = Article.includes(:comments).to_a  #don't need Articles.entries.all
     # @articles = Article.all  #don't need Articles.entries.all
         # queries 
     
@@ -46,7 +46,7 @@ class ArticlesController < ApplicationController
   private
 
   def get_article
-    head :not_found unless @article = Article.includes(:comments).find(params[:id]).find(params[:id])
+    head :not_found unless @article = Article.includes(:comments).find(params[:id])
   end
 
   def article_params

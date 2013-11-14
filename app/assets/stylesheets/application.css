@@ -13,7 +13,16 @@
  *= require_self
  */
 
-
+ ul.article-links {
+  list-style-type: none;
+ }
+ul.article-links li{
+  cursor: pointer;
+}
+ul.article-links li:hover {
+  color: darkred;
+  font-weight: bold;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 
