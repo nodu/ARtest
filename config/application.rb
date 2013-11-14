@@ -8,6 +8,10 @@ Bundler.require(:default, Rails.env)
 
 module ARtest
   class Application < Rails::Application
+    
+    # This adds the bootstrap fonts to the asset pipeline in application.rb
+    config.assets.paths << "#{Rails}/vendor/assets/fonts"
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

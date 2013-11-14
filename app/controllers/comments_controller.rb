@@ -1,7 +1,10 @@
 class CommentsController < ApplicationController
+  before_action :get_article
+  before_action :get_comment, except: [:index, :create] # could've used only, just the opposite
+
   def index
-    article = Article.includes(:comments).find(params[:article_id])
-    comments = article.comments
+    
+    comments = @article.comments
 
     render json: comments.to_json(
       include: [
@@ -15,10 +18,10 @@ class CommentsController < ApplicationController
   end
 
   def show
-    article = Article.includes(:comments).find(params[:article_id])
-    comment = article.comments.find(params[:id])
+    # article = Article.includes(:comments).find(params[:article_id])
+    # comment = @article.comments.find(params[:id])
 
-    render json: comment.to_json(
+    render json: @comment.to_json(
       include: [
         article: {
           only: [:title]
@@ -35,5 +38,16 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @comment.destroy
+  end
+
+  private
+
+  def get_article
+    @article = Article.includes(:comments).find(params[:article_id])
+  end
+
+  def get_comment
+    @comment = @article.comments.find(params[:id])
   end
 end

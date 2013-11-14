@@ -8,7 +8,6 @@
 
 
 Article.destroy_all
-Comment.destroy_all
 
 articles = Article.create([
   {
