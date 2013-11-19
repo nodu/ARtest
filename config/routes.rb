@@ -4,8 +4,8 @@ ARtest::Application.routes.draw do
 # Makes the format only output json?
 
   scope :api do
-    resources :articles, default: { format: :json}, except: [:new, :edit] do
-      resources :comments, default: { format: :json}, except: [:new, :edit]
+    resources :articles, defaults: { format: :json}, except: [:new, :edit] do
+      resources :comments, defaults: { format: :json}, except: [:new, :edit]
     end
   end
 
